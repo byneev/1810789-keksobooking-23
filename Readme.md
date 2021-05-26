@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
-* Студент: [Stanislav Byneev](https://up.htmlacademy.ru/javascript/23/user/1810789).
-* Наставник: `Неизвестно`.
+- Студент: [Stanislav Byneev](https://up.htmlacademy.ru/javascript/23/user/1810789).
+- Наставник: `Roman Lauryniuk`.
 
 ---
 
