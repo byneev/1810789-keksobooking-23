@@ -13,8 +13,76 @@ function randomizeFloat(start, end, signAmount) {
   if (start < 0 || end < 0 || range <= 0) {
     return;
   }
-  const result = (Math.random() * (range + 1) + start).toFixed(signAmount);
-  return result >= 5 ? (5).toFixed(signAmount) : result;
+  return (result = (Math.random() * range + start).toFixed(signAmount));
 }
 
 randomizeFloat(2, 5, 2);
+
+//module4 task1
+let imgAdressPostfix = 0;
+
+const getRandomArrayItem = (array) => array[randomize(0, array.length - 1)];
+const getRandomArrayItems = (array) => {
+  const result = [];
+  for (let index = 1; index <= randomize(1, array.length); index++) {
+    const item = getRandomArrayItem(array);
+    if (!result.includes(item)) {
+      result.push(item);
+    }
+  }
+  return result;
+};
+
+const APPART_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const APPART_CHECK_TIMES = ['12:00', '13:00', '14:00'];
+const APPART_FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
+const APPART_PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
+
+const createAuthor = () => {
+  imgAdressPostfix++;
+  const postfix =
+    String(imgAdressPostfix).length === 1
+      ? `0${imgAdressPostfix}`
+      : imgAdressPostfix;
+  return {
+    avatar: `img/avatars/user${postfix}.png`,
+  };
+};
+
+const createOffer = (lat, lng) => ({
+  title: 'Шикарная кровать в шестиместной комнате',
+  address: 'location.x, location.y',
+  price: randomize(1500, 15000),
+  type: getRandomArrayItem(APPART_TYPES),
+  rooms: randomize(1, 5),
+  guests: randomize(1, 6),
+  checkin: getRandomArrayItem(APPART_CHECK_TIMES),
+  checkout: getRandomArrayItem(APPART_CHECK_TIMES),
+  features: getRandomArrayItems(APPART_FEATURES),
+  description: 'Отличное помещение. И конкурсы отличные',
+  photos: getRandomArrayItems(APPART_PHOTOS),
+});
+
+const createLocation = () => ({
+  lat: randomizeFloat(35.65, 35.7, 5),
+  lng: randomizeFloat(139.7, 139.8, 5),
+});
+
+const createObj = () => ({
+  location: createLocation(),
+  author: createAuthor(),
+  offer: createOffer(),
+});
+
+const resultArray = new Array(10).fill(null).map(() => createObj());
