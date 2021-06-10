@@ -73,4 +73,4 @@ const generateCard = () => ({
 });
 
 const resultArray = new Array(10).fill(null).map(() => generateCard());
-console.log(resultArray);
+resultArray.length;
