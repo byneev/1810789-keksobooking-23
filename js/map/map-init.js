@@ -1,3 +1,4 @@
-const isMapLoaded = () => false;
+import { blockForm, activateForm } from './map-filter-condition.js';
 
-export { isMapLoaded };
+blockForm();
+setTimeout(activateForm, 5000);
