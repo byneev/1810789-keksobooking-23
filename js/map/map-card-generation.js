@@ -6,7 +6,7 @@ const map = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const generateCard = (cardData) => {
-  const { location, author, offer } = cardData; //get data
+  const { author, offer } = cardData; //get data
   const card = cardTemplate.cloneNode(true); //get card template
   const featuresList = card.querySelector('.popup__features');
   const featuresItem = featuresList.querySelectorAll('.popup__feature');
@@ -20,7 +20,7 @@ const generateCard = (cardData) => {
   const popupAvatar = card.querySelector('.popup__avatar');
   author.avatar === undefined ? popupAvatar.classList.add('hidden') : (popupAvatar.src = author.avatar);
   const popupTitle = card.querySelector('.popup__title');
-  offer.title === undefined ? popupTitle.classList.add('hidden') : (popupTitle.src = offer.title);
+  offer.title === undefined ? popupTitle.classList.add('hidden') : (popupTitle.textContent = offer.title);
   const popupAdress = card.querySelector('.popup__text--address');
   offer.address === undefined ? popupAdress.classList.add('hidden') : (popupAdress.textContent = offer.address);
   const popupTextPrice = card.querySelector('.popup__text--price');
