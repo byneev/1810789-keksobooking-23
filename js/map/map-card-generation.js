@@ -1,76 +1,63 @@
-import { getRandomPositiveInteger } from '../utils/get-random-positive-integer';
-import { getRandomPositiveFloat } from '../utils/get-random-positive-float';
+import { generateData } from './map-data-generation.js';
+import { APPART_TYPES_DICT } from './map-data-generation.js';
+import { getWordEnding } from './map-data-generation.js';
 
-let imgAdressPostfix = 0;
+const map = document.querySelector('#map-canvas');
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const getRandomArrayItem = (array) =>
-  array[getRandomPositiveInteger(0, array.length - 1)];
-const getRandomArrayItems = (array) => {
-  const result = [];
-  for (
-    let index = 1;
-    index <= getRandomPositiveInteger(1, array.length);
-    index++
-  ) {
-    const item = getRandomArrayItem(array);
-    if (!result.includes(item)) {
-      result.push(item);
-    }
+const generateCard = (cardData) => {
+  const { author, offer } = cardData; //get data
+  const card = cardTemplate.cloneNode(true); //get card template
+  const featuresList = card.querySelector('.popup__features');
+  const featuresItem = featuresList.querySelectorAll('.popup__feature');
+  if (offer.features === undefined) {
+    featuresList.classList.add('hidden');
+  } else {
+    const offerFeatures = offer.features.map((item) => `popup__feature--${item}`); //get array with fetures classes
+    featuresList.innerHTML = '';
+    [...featuresItem].filter((item) => offerFeatures.includes(item.classList[1])).forEach((item) => featuresList.appendChild(item));
   }
-  return result;
+  const popupAvatar = card.querySelector('.popup__avatar');
+  author.avatar === undefined ? popupAvatar.classList.add('hidden') : (popupAvatar.src = author.avatar);
+  const popupTitle = card.querySelector('.popup__title');
+  offer.title === undefined ? popupTitle.classList.add('hidden') : (popupTitle.textContent = offer.title);
+  const popupAdress = card.querySelector('.popup__text--address');
+  offer.address === undefined ? popupAdress.classList.add('hidden') : (popupAdress.textContent = offer.address);
+  const popupTextPrice = card.querySelector('.popup__text--price');
+  offer.price === undefined ? popupTextPrice.classList.add('hidden') : (popupTextPrice.innerHTML = `${offer.price} <span>₽/ночь</span>`);
+  const popupType = card.querySelector('.popup__type');
+  offer.type === undefined ? popupType.classList.add('hidden') : (popupType.textContent = APPART_TYPES_DICT[offer.type]);
+  const popupTextCapacity = card.querySelector('.popup__text--capacity');
+  offer.rooms === undefined
+    ? popupTextCapacity.classList.add('hidden')
+    : (popupTextCapacity.textContent = `${offer.rooms} комнат${getWordEnding(offer.rooms)}
+    для ${offer.guests} гост${offer.guests === 1 ? 'я' : 'ей'}`);
+  const popupTextTime = card.querySelector('.popup__text--time');
+
+  offer.checkin === undefined || offer.checkout === undefined
+    ? popupTextTime.classList.add('hidden')
+    : (popupTextTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+  const popupDescription = card.querySelector('.popup__description');
+  offer.description === undefined ? popupDescription.classList.add('hidden') : (popupDescription.textContent = offer.description);
+  // generate popup__photos
+  const photosList = card.querySelector('.popup__photos');
+  const photo = card.querySelector('.popup__photo');
+  if (offer.photos === undefined) {
+    photosList.classList.add('hidden');
+  } else {
+    photosList.innerHTML = '';
+    offer.photos.forEach((item) => {
+      const photoItem = photo.cloneNode(true);
+      photoItem.src = item;
+      photosList.appendChild(photoItem);
+    });
+  }
+
+  return card;
 };
 
-const APPART_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const APPART_CHECK_TIMES = ['12:00', '13:00', '14:00'];
-const APPART_FEATURES = [
-  'wifi',
-  'dishwasher',
-  'parking',
-  'washer',
-  'elevator',
-  'conditioner',
-];
-const APPART_PHOTOS = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-];
-
-const createAuthor = () => {
-  imgAdressPostfix++;
-  const postfix =
-    String(imgAdressPostfix).length === 1
-      ? `0${imgAdressPostfix}`
-      : imgAdressPostfix;
-  return {
-    avatar: `img/avatars/user${postfix}.png`,
-  };
-};
-
-const createOffer = () => ({
-  title: 'Шикарная кровать в шестиместной комнате',
-  address: 'location.x, location.y',
-  price: getRandomPositiveInteger(1500, 15000),
-  type: getRandomArrayItem(APPART_TYPES),
-  rooms: getRandomPositiveInteger(1, 5),
-  guests: getRandomPositiveInteger(1, 6),
-  checkin: getRandomArrayItem(APPART_CHECK_TIMES),
-  checkout: getRandomArrayItem(APPART_CHECK_TIMES),
-  features: getRandomArrayItems(APPART_FEATURES),
-  description: 'Отличное помещение. И конкурсы отличные',
-  photos: getRandomArrayItems(APPART_PHOTOS),
-});
-
-const createLocation = () => ({
-  lat: getRandomPositiveFloat(35.65, 35.7, 5),
-  lng: getRandomPositiveFloat(139.7, 139.8, 5),
-});
-
-const generateCard = () => ({
-  location: createLocation(),
-  author: createAuthor(),
-  offer: createOffer(),
-});
-
-const resultArray = new Array(10).fill(null).map(() => generateCard());
-console.log(resultArray);
+const cardNumbers = 4;
+for (let i = 0; i < cardNumbers; i++) {
+  const cardData = generateData();
+  map.appendChild(generateCard(cardData));
+}
