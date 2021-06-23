@@ -1,7 +1,11 @@
+const noticeTitle = document.querySelector('#title');
 const noticeType = document.querySelector('#type');
 const noticePrice = document.querySelector('#price');
 const noticeRoom = document.querySelector('#room_number');
 const noticeCapacity = document.querySelector('#capacity');
+const noticeTimeIn = document.querySelector('#timein');
+const noticeTimeOut = document.querySelector('#timeout');
+const noticeForm = document.querySelector('.ad-form');
 
 const noticePriceChanger = (value) => {
   noticePrice.setAttribute('min', value);
@@ -66,3 +70,36 @@ noticeRoom.addEventListener('change', () => {
       break;
   }
 });
+
+noticeTimeIn.addEventListener('change', () => {
+  noticeTimeOut.options[noticeTimeIn.selectedIndex].selected = true;
+});
+
+noticeTimeOut.addEventListener('change', () => {
+  noticeTimeIn.options[noticeTimeOut.selectedIndex].selected = true;
+});
+
+noticeTitle.addEventListener('input', () => {
+  if (!noticeTitle.checkValidity()) {
+    if (noticeTitle.validity.tooShort) {
+      noticeTitle.setCustomValidity('Это обязательное поле. Длина от 30 до 100 символов.');
+    } else {
+      noticeTitle.setCustomValidity('');
+    }
+  }
+  noticeTitle.reportValidity();
+});
+
+noticePrice.addEventListener('input', () => {
+  if (!noticePrice.checkValidity()) {
+    if (noticePrice.validity.rangeUnderflow) {
+      noticePrice.setCustomValidity('Минимальная цена зависит от типа жилья.');
+    } else {
+      noticePrice.setCustomValidity('');
+    }
+  }
+  noticePrice.reportValidity();
+});
+
+
+
