@@ -1,8 +1,6 @@
-import { generateData } from './map-data-generation.js';
 import { APPART_TYPES_DICT } from './map-data-generation.js';
 import { getWordEnding } from './map-data-generation.js';
 
-const map = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const generateCard = (cardData) => {
@@ -56,8 +54,4 @@ const generateCard = (cardData) => {
   return card;
 };
 
-const cardNumbers = 4;
-for (let i = 0; i < cardNumbers; i++) {
-  const cardData = generateData();
-  map.appendChild(generateCard(cardData));
-}
+export { generateCard };

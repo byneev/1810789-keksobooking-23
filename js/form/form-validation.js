@@ -5,7 +5,6 @@ const noticeRoom = document.querySelector('#room_number');
 const noticeCapacity = document.querySelector('#capacity');
 const noticeTimeIn = document.querySelector('#timein');
 const noticeTimeOut = document.querySelector('#timeout');
-const noticeForm = document.querySelector('.ad-form');
 
 const noticePriceChanger = (value) => {
   noticePrice.setAttribute('min', value);
@@ -100,6 +99,3 @@ noticePrice.addEventListener('input', () => {
   }
   noticePrice.reportValidity();
 });
-
-
-
