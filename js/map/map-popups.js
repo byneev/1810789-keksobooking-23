@@ -1,0 +1,3 @@
+const showLoadAdsError = () => {};
+
+export { showLoadAdsError };
