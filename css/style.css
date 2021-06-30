@@ -1029,17 +1029,51 @@ fieldset {
   top: 100px;
   left: 50%;
   transform: translateX(-50%);
-  min-width: 200px;
-  min-height: 200px;
-  display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px solid tomato;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 3px solid rgb(207, 70, 46);
+  z-index: 1000;
+  background-color: #f0f0ea;
 }
 
 .server-message__text {
-  color: black;
+  color: #353535;
   font-family: "Roboto", "Arial", sans-serif;
   font-size: 25px;
   font-weight: bold;
+}
+
+.server-message__btn--close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+
+.server-message__btn--close::before {
+  position: absolute;
+  content: "";
+  background-color: #353535;
+  width: 20px;
+  height: 2px;
+  right: 0;
+  top: 9px;
+  transform: rotate(45deg);
+}
+
+.server-message__btn--close::after {
+  position: absolute;
+  content: "";
+  background-color: #353535;
+  width: 20px;
+  height: 2px;
+  right: 0;
+  top: 9px;
+  transform: rotate(-45deg);
 }
