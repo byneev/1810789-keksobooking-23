@@ -22,80 +22,85 @@ const noticeResetDisable = (select, start, end) => {
     select.options[index].disabled = false;
   }
 };
-noticePriceChanger(1000);
-noticeType.addEventListener('change', () => {
-  const currentType = noticeType.options[noticeType.selectedIndex].text;
-  switch (currentType) {
-    case 'Бунгало':
-      noticePriceChanger(0);
-      break;
-    case 'Квартира':
-      noticePriceChanger(1000);
-      break;
-    case 'Отель':
-      noticePriceChanger(3000);
-      break;
-    case 'Дом':
-      noticePriceChanger(5000);
-      break;
-    case 'Дворец':
-      noticePriceChanger(10000);
-      break;
-  }
-});
-noticeDisableAll(noticeCapacity);
-noticeResetDisable(noticeCapacity, 0, 3);
 
-noticeRoom.addEventListener('change', () => {
-  const numberRooms = noticeRoom.options[noticeRoom.selectedIndex].text;
+const addValidateNoticeForm = () => {
+  noticePriceChanger(1000);
+  noticeType.addEventListener('change', () => {
+    const currentType = noticeType.options[noticeType.selectedIndex].text;
+    switch (currentType) {
+      case 'Бунгало':
+        noticePriceChanger(0);
+        break;
+      case 'Квартира':
+        noticePriceChanger(1000);
+        break;
+      case 'Отель':
+        noticePriceChanger(3000);
+        break;
+      case 'Дом':
+        noticePriceChanger(5000);
+        break;
+      case 'Дворец':
+        noticePriceChanger(10000);
+        break;
+    }
+  });
   noticeDisableAll(noticeCapacity);
-  const noticeCapacityList = noticeCapacity.options;
-  switch (numberRooms) {
-    case '1 комната':
-      noticeCapacityList[2].selected = true;
-      noticeResetDisable(noticeCapacity, 2, 3);
-      break;
-    case '2 комнаты':
-      noticeCapacityList[1].selected = true;
-      noticeResetDisable(noticeCapacity, 1, 3);
-      break;
-    case '3 комнаты':
-      noticeCapacityList[0].selected = true;
-      noticeResetDisable(noticeCapacity, 0, 3);
-      break;
-    case '100 комнат':
-      noticeCapacityList[3].selected = true;
-      noticeResetDisable(noticeCapacity, 3, 4);
-      break;
-  }
-});
+  noticeResetDisable(noticeCapacity, 0, 3);
 
-noticeTimeIn.addEventListener('change', () => {
-  noticeTimeOut.options[noticeTimeIn.selectedIndex].selected = true;
-});
-
-noticeTimeOut.addEventListener('change', () => {
-  noticeTimeIn.options[noticeTimeOut.selectedIndex].selected = true;
-});
-
-noticeTitle.addEventListener('input', () => {
-  if (!noticeTitle.checkValidity()) {
-    if (noticeTitle.validity.tooShort) {
-      noticeTitle.setCustomValidity('Это обязательное поле. Длина от 30 до 100 символов.');
-    } else {
-      noticeTitle.setCustomValidity('');
+  noticeRoom.addEventListener('change', () => {
+    const numberRooms = noticeRoom.options[noticeRoom.selectedIndex].text;
+    noticeDisableAll(noticeCapacity);
+    const noticeCapacityList = noticeCapacity.options;
+    switch (numberRooms) {
+      case '1 комната':
+        noticeCapacityList[2].selected = true;
+        noticeResetDisable(noticeCapacity, 2, 3);
+        break;
+      case '2 комнаты':
+        noticeCapacityList[1].selected = true;
+        noticeResetDisable(noticeCapacity, 1, 3);
+        break;
+      case '3 комнаты':
+        noticeCapacityList[0].selected = true;
+        noticeResetDisable(noticeCapacity, 0, 3);
+        break;
+      case '100 комнат':
+        noticeCapacityList[3].selected = true;
+        noticeResetDisable(noticeCapacity, 3, 4);
+        break;
     }
-  }
-  noticeTitle.reportValidity();
-});
+  });
 
-noticePrice.addEventListener('input', () => {
-  if (!noticePrice.checkValidity()) {
-    if (noticePrice.validity.rangeUnderflow) {
-      noticePrice.setCustomValidity('Минимальная цена зависит от типа жилья.');
-    } else {
-      noticePrice.setCustomValidity('');
+  noticeTimeIn.addEventListener('change', () => {
+    noticeTimeOut.options[noticeTimeIn.selectedIndex].selected = true;
+  });
+
+  noticeTimeOut.addEventListener('change', () => {
+    noticeTimeIn.options[noticeTimeOut.selectedIndex].selected = true;
+  });
+
+  noticeTitle.addEventListener('input', () => {
+    if (!noticeTitle.checkValidity()) {
+      if (noticeTitle.validity.tooShort) {
+        noticeTitle.setCustomValidity('Это обязательное поле. Длина от 30 до 100 символов.');
+      } else {
+        noticeTitle.setCustomValidity('');
+      }
     }
-  }
-  noticePrice.reportValidity();
-});
+    noticeTitle.reportValidity();
+  });
+
+  noticePrice.addEventListener('input', () => {
+    if (!noticePrice.checkValidity()) {
+      if (noticePrice.validity.rangeUnderflow) {
+        noticePrice.setCustomValidity('Минимальная цена зависит от типа жилья.');
+      } else {
+        noticePrice.setCustomValidity('');
+      }
+    }
+    noticePrice.reportValidity();
+  });
+};
+
+export { addValidateNoticeForm };
