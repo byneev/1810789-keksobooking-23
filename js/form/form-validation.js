@@ -45,8 +45,6 @@ const addValidateNoticeForm = () => {
         break;
     }
   });
-  noticeDisableAll(noticeCapacity);
-  noticeResetDisable(noticeCapacity, 0, 3);
 
   noticeRoom.addEventListener('change', () => {
     const numberRooms = noticeRoom.options[noticeRoom.selectedIndex].text;
@@ -103,4 +101,4 @@ const addValidateNoticeForm = () => {
   });
 };
 
-export { addValidateNoticeForm };
+export { addValidateNoticeForm, noticePriceChanger };

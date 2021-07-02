@@ -1,6 +1,6 @@
-import { blockForm, activateForm } from './map-filter-condition.js';
+import { blockForm, activateForm } from './map-condition.js';
 import { generateCard } from './map-card-generation.js';
-import { renderAds } from './map-filter-handler.js';
+import { renderAds } from './map-data.js';
 
 blockForm();
 const isMapReady = false;
@@ -31,12 +31,12 @@ const initMap = () => {
 
 const noticeAdress = document.querySelector('#address');
 
-const setAdressValue = () => {
+const setDefaultAdress = () => {
   const { lat, lng } = mainMarker.getLatLng();
   noticeAdress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
-setAdressValue();
-mainMarker.on('moveend', setAdressValue);
+setDefaultAdress();
+mainMarker.on('moveend', setDefaultAdress);
 const adsIcon = L.icon({
   iconUrl: '/img/pin.svg',
   iconSize: [40, 40],
@@ -50,7 +50,7 @@ const repaintMap = () => {
   mainMarker.setLatLng([35.6894, 139.692]);
   adsLayer.clearLayers();
   renderAds();
-  setAdressValue();
+  setDefaultAdress();
 };
 
 const addMarker = (data) => {
@@ -69,4 +69,4 @@ const fillAdsLayer = (adsData) => {
   adsData.forEach((data) => addMarker(data));
 };
 
-export { fillAdsLayer, isMapReady, repaintMap, initMap, setAdressValue };
+export { fillAdsLayer, isMapReady, repaintMap, initMap, setDefaultAdress };

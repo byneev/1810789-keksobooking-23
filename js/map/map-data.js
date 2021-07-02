@@ -1,5 +1,5 @@
 import { showLoadAdsError, hideLoadAdsError } from './map-popups.js';
-import { fillAdsLayer } from './map-handler.js';
+import { fillAdsLayer } from './map.js';
 
 const mapFilter = document.querySelector('.map__filters');
 
@@ -21,9 +21,8 @@ const getData = (callOnSuccess, callOnError) => () =>
     .catch(callOnError);
 
 const renderAds = getData(fillAdsLayer, showLoadAdsError);
+// const addFilterRender = () => {
+mapFilter.addEventListener('change', renderAds);
+// };
 
-const filterRenderAds = () => {
-  mapFilter.addEventListener('change', renderAds);
-};
-
-export { renderAds, filterRenderAds, mapFilter };
+export { renderAds, mapFilter };

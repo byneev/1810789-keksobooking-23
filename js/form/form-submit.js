@@ -1,10 +1,8 @@
-import { noticeFormReset, noticeForm } from './form-reset.js';
+import { formReset, noticeForm } from './form-reset.js';
 import { showNoticeSuccess, showNoticeError } from './form-popups.js';
 
-const btnSubmit = document.querySelector('.ad-form__submit');
-
 const sendData = (onSuccess, onError) => () =>
-  fetch('https://23.javascript.pages.academy/keksobookingg', {
+  fetch('https://23.javascript.pages.academy/keksobooking', {
     method: 'POST',
     credentials: 'same-origin',
     body: new FormData(noticeForm),
@@ -15,7 +13,7 @@ const sendData = (onSuccess, onError) => () =>
       }
     })
     .then(onSuccess)
-    .then(noticeFormReset)
+    .then(formReset)
     .catch(onError);
 
 const sendFormData = sendData(showNoticeSuccess, showNoticeError);
