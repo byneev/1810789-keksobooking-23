@@ -1,35 +1,42 @@
-import { generateData } from './map-data-generation.js';
-import { blockForm, activateForm } from './map-filter-condition.js';
+import { blockForm, activateForm } from './map-condition.js';
 import { generateCard } from './map-card-generation.js';
+import { renderAds } from './map-data.js';
 
 blockForm();
-
+const isMapReady = false;
 const mapContainer = document.querySelector('#map-canvas');
-const map = L.map(mapContainer).on('load', activateForm).setView([35.6894, 139.692], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-}).addTo(map);
-
+const map = L.map(mapContainer);
 const mainMarkerIcon = L.icon({
   iconUrl: '/img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
-
 const mainMarker = L.marker([35.6894, 139.692], {
   draggable: true,
   icon: mainMarkerIcon,
-}).addTo(map);
-
-// Ad adress filler
-const noticeAdress = document.querySelector('#address');
-mainMarker.on('moveend', () => {
-  const { lat, lng } = mainMarker.getLatLng();
-  noticeAdress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
-// Cards on map
+const initMap = () => {
+  map
+    .on('load', () => {
+      activateForm();
+    })
+    .setView([35.6894, 139.692], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
 
+  mainMarker.addTo(map);
+};
+
+const noticeAdress = document.querySelector('#address');
+
+const setDefaultAdress = () => {
+  const { lat, lng } = mainMarker.getLatLng();
+  noticeAdress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+};
+setDefaultAdress();
+mainMarker.on('moveend', setDefaultAdress);
 const adsIcon = L.icon({
   iconUrl: '/img/pin.svg',
   iconSize: [40, 40],
@@ -37,7 +44,14 @@ const adsIcon = L.icon({
 });
 
 const adsLayer = L.layerGroup().addTo(map);
-const adsDataArray = new Array(9).fill(null).map(() => generateData());
+
+const repaintMap = () => {
+  map.setView([35.6894, 139.692], 13);
+  mainMarker.setLatLng([35.6894, 139.692]);
+  adsLayer.clearLayers();
+  renderAds();
+  setDefaultAdress();
+};
 
 const addMarker = (data) => {
   const { location } = data;
@@ -55,4 +69,4 @@ const fillAdsLayer = (adsData) => {
   adsData.forEach((data) => addMarker(data));
 };
 
-fillAdsLayer(adsDataArray);
+export { fillAdsLayer, isMapReady, repaintMap, initMap, setDefaultAdress };
