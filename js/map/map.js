@@ -1,9 +1,8 @@
-import { blockForm, activateForm } from './map-condition.js';
+import { blockForm } from './map-condition.js';
 import { generateCard } from './map-card-generation.js';
 import { renderAds } from './map-data.js';
 
 blockForm();
-const isMapReady = false;
 const mapContainer = document.querySelector('#map-canvas');
 const map = L.map(mapContainer);
 const mainMarkerIcon = L.icon({
@@ -53,6 +52,11 @@ const repaintMap = () => {
   setDefaultAdress();
 };
 
+const refreshAds = () => {
+  adsLayer.clearLayers();
+  renderAds();
+};
+
 const addMarker = (data) => {
   const { location } = data;
   const cardPopup = generateCard(data);
@@ -69,4 +73,4 @@ const fillAdsLayer = (adsData) => {
   adsData.forEach((data) => addMarker(data));
 };
 
-export { fillAdsLayer, isMapReady, repaintMap, initMap, setDefaultAdress };
+export { fillAdsLayer, repaintMap, initMap, setDefaultAdress, refreshAds };
