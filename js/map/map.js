@@ -19,7 +19,7 @@ const mainMarker = L.marker([35.6894, 139.692], {
 const initMap = () => {
   map
     .on('load', () => {
-      activateForm();
+      renderAds();
     })
     .setView([35.6894, 139.692], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

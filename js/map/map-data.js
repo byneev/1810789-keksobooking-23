@@ -1,3 +1,4 @@
+import { dataFilter } from './map-filter.js';
 import { showLoadAdsError, hideLoadAdsError } from './map-popups.js';
 import { fillAdsLayer } from './map.js';
 
@@ -11,13 +12,11 @@ const getData = (callOnSuccess, callOnError) => () =>
       }
       throw new Error();
     })
-    .then((data) => {
-      hideLoadAdsError();
-      return data.slice(0, 10);
-    })
+    .then((data) => dataFilter(data))
     .then((data) => {
       callOnSuccess(data);
     })
+    .then(hideLoadAdsError)
     .catch(callOnError);
 
 const renderAds = getData(fillAdsLayer, showLoadAdsError);
