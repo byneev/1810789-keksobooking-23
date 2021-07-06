@@ -7,36 +7,36 @@ errorSubmit.classList.add('hidden');
 document.body.appendChild(successSubmit);
 document.body.appendChild(errorSubmit);
 
-const closeEsc = (evt) => {
+const closeByEsc = (evt) => {
   if (evt.key === 'Esc' || evt.key === 'Escape') {
     successSubmit.classList.add('hidden');
     errorSubmit.classList.add('hidden');
-    document.body.removeEventListener('keydown', closeEsc);
+    document.body.removeEventListener('keydown', closeByEsc);
   }
 };
 
-const closeSuccessClick = () => {
+const closeSuccessByClick = () => {
   successSubmit.classList.add('hidden');
-  successSubmit.removeEventListener('click', closeSuccessClick);
-  document.body.removeEventListener('keydown', closeEsc);
+  successSubmit.removeEventListener('click', closeSuccessByClick);
+  document.body.removeEventListener('keydown', closeByEsc);
 };
 
-const showNoticeSuccess = () => {
+const showSuccessSubmit = () => {
   successSubmit.classList.remove('hidden');
-  successSubmit.addEventListener('click', closeSuccessClick);
-  document.body.addEventListener('keydown', closeEsc);
+  successSubmit.addEventListener('click', closeSuccessByClick);
+  document.body.addEventListener('keydown', closeByEsc);
 };
 
-const closeErrorClick = () => {
+const closeErrorByClick = () => {
   errorSubmit.classList.add('hidden');
-  errorSubmit.removeEventListener('click', closeErrorClick);
-  document.body.removeEventListener('keydown', closeEsc);
+  errorSubmit.removeEventListener('click', closeErrorByClick);
+  document.body.removeEventListener('keydown', closeByEsc);
 };
 
-const showNoticeError = () => {
+const showErrorSubmit = () => {
   errorSubmit.classList.remove('hidden');
-  errorSubmit.addEventListener('click', closeErrorClick);
-  document.body.addEventListener('keydown', closeEsc);
+  errorSubmit.addEventListener('click', closeErrorByClick);
+  document.body.addEventListener('keydown', closeByEsc);
 };
 
-export { showNoticeSuccess, showNoticeError };
+export { showSuccessSubmit, showErrorSubmit };

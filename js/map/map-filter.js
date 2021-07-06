@@ -1,8 +1,8 @@
-const typeFilterState = document.querySelector('#housing-type');
-const priceFilterState = document.querySelector('#housing-price');
-const roomsFilterState = document.querySelector('#housing-rooms');
-const guestsFilterState = document.querySelector('#housing-guests');
-const featuresFilterList = document.querySelector('#housing-features');
+const filterType = document.querySelector('#housing-type');
+const filterPrice = document.querySelector('#housing-price');
+const filterRooms = document.querySelector('#housing-rooms');
+const filterGuests = document.querySelector('#housing-guests');
+const filterFeatures = document.querySelector('#housing-features');
 
 const getPriceString = (dataItem) => {
   const price = dataItem.offer.price;
@@ -18,8 +18,8 @@ const getPriceString = (dataItem) => {
 const getItemRank = (dataItem) => {
   let rank = 0;
   const features = dataItem.offer.features;
-  const featuresFilterItems = featuresFilterList.querySelectorAll('[name="features"');
-  featuresFilterItems.forEach((item) => {
+  const filterFeaturesItems = filterFeatures.querySelectorAll('[name="features"');
+  filterFeaturesItems.forEach((item) => {
     if (features !== undefined) {
       if (item.checked && features.includes(item.value)) {
         rank++;
@@ -32,21 +32,21 @@ const getItemRank = (dataItem) => {
 
 const sortByRank = (itemA, itemB) => getItemRank(itemB) - getItemRank(itemA);
 
-const dataSort = (data) => {
+const sortData = (data) => {
   data.sort(sortByRank);
   return data;
 };
 
-const dataFilter = (data) => {
+const filterOutData = (data) => {
   const dataHandled = data
-    .filter((dataItem) => typeFilterState.value === dataItem.offer.type || typeFilterState.value === 'any')
-    .filter((dataItem) => roomsFilterState.value === String(dataItem.offer.rooms) || roomsFilterState.value === 'any')
-    .filter((dataItem) => guestsFilterState.value === String(dataItem.offer.guests) || guestsFilterState.value === 'any')
-    .filter((dataItem) => priceFilterState.value === getPriceString(dataItem) || priceFilterState.value === 'any');
+    .filter((dataItem) => filterType.value === dataItem.offer.type || filterType.value === 'any')
+    .filter((dataItem) => filterRooms.value === String(dataItem.offer.rooms) || filterRooms.value === 'any')
+    .filter((dataItem) => filterGuests.value === String(dataItem.offer.guests) || filterGuests.value === 'any')
+    .filter((dataItem) => filterPrice.value === getPriceString(dataItem) || filterPrice.value === 'any');
 
-  dataSort(dataHandled);
+  sortData(dataHandled);
 
   return dataHandled;
 };
 
-export { dataSort, dataFilter };
+export { filterOutData };

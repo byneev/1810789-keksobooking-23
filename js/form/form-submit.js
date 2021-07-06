@@ -1,5 +1,5 @@
-import { formReset, noticeForm } from './form-reset.js';
-import { showNoticeSuccess, showNoticeError } from './form-popups.js';
+import { resetPageData, noticeForm } from './form-reset.js';
+import { showSuccessSubmit, showErrorSubmit } from './form-popups.js';
 
 const sendData = (onSuccess, onError) => () =>
   fetch('https://23.javascript.pages.academy/keksobooking', {
@@ -13,10 +13,10 @@ const sendData = (onSuccess, onError) => () =>
       }
     })
     .then(onSuccess)
-    .then(formReset)
+    .then(resetPageData)
     .catch(onError);
 
-const sendFormData = sendData(showNoticeSuccess, showNoticeError);
+const sendFormData = sendData(showSuccessSubmit, showErrorSubmit);
 
 noticeForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
