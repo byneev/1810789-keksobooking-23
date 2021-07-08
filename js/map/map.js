@@ -1,8 +1,6 @@
-import { blockForm } from './map-condition.js';
 import { generateCard } from './map-card-generation.js';
 import { renderAds } from './map-data.js';
 
-blockForm();
 const mapContainer = document.querySelector('#map-canvas');
 const map = L.map(mapContainer);
 const mainMarkerIcon = L.icon({
@@ -15,7 +13,7 @@ const mainMarker = L.marker([35.6894, 139.692], {
   icon: mainMarkerIcon,
 });
 
-const initMap = () => {
+const drawMap = () => {
   map
     .on('load', () => {
       renderAds();
@@ -30,12 +28,12 @@ const initMap = () => {
 
 const noticeAdress = document.querySelector('#address');
 
-const setDefaultAdress = () => {
+const setDefaultLocation = () => {
   const { lat, lng } = mainMarker.getLatLng();
   noticeAdress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
-setDefaultAdress();
-mainMarker.on('moveend', setDefaultAdress);
+setDefaultLocation();
+mainMarker.on('moveend', setDefaultLocation);
 const adsIcon = L.icon({
   iconUrl: '/img/pin.svg',
   iconSize: [40, 40],
@@ -44,12 +42,12 @@ const adsIcon = L.icon({
 
 const adsLayer = L.layerGroup().addTo(map);
 
-const repaintMap = () => {
+const refreshMap = () => {
   map.setView([35.6894, 139.692], 13);
   mainMarker.setLatLng([35.6894, 139.692]);
   adsLayer.clearLayers();
   renderAds();
-  setDefaultAdress();
+  setDefaultLocation();
 };
 
 const refreshAds = () => {
@@ -73,4 +71,4 @@ const fillAdsLayer = (adsData) => {
   adsData.forEach((data) => addMarker(data));
 };
 
-export { fillAdsLayer, repaintMap, initMap, setDefaultAdress, refreshAds };
+export { fillAdsLayer, refreshMap, drawMap, refreshAds };

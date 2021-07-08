@@ -1,20 +1,21 @@
 import { mapFilter } from '../map/map-data.js';
-import { repaintMap } from '../map/map.js';
-import { noticePriceChanger } from './form-validation.js';
+import { refreshMap } from '../map/map.js';
+import { changeNoticePrice } from './form-validation.js';
 
+const DEFAULT_PRICE = 1000;
 const noticeForm = document.querySelector('.ad-form');
 const btnReset = noticeForm.querySelector('.ad-form__reset');
 
-const formReset = () => {
+const resetPageData = () => {
   noticeForm.reset();
   mapFilter.reset();
-  repaintMap();
-  noticePriceChanger(1000);
+  refreshMap();
+  changeNoticePrice(DEFAULT_PRICE);
 };
 
 btnReset.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formReset();
+  resetPageData();
 });
 
-export { formReset, noticeForm };
+export { resetPageData, noticeForm };

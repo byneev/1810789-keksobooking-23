@@ -1,3 +1,10 @@
+const Types = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
 const noticeTitle = document.querySelector('#title');
 const noticeType = document.querySelector('#type');
 const noticePrice = document.querySelector('#price');
@@ -6,66 +13,66 @@ const noticeCapacity = document.querySelector('#capacity');
 const noticeTimeIn = document.querySelector('#timein');
 const noticeTimeOut = document.querySelector('#timeout');
 
-const noticePriceChanger = (value) => {
+const changeNoticePrice = (value) => {
   noticePrice.setAttribute('min', value);
   noticePrice.setAttribute('placeholder', value);
 };
 
-const noticeDisableAll = (select) => {
+const disableAllOptions = (select) => {
   [...select.options].forEach((element) => {
     element.disabled = true;
   });
 };
 
-const noticeResetDisable = (select, start, end) => {
+const enableOptions = (select, start, end) => {
   for (let index = start; index < end; index++) {
     select.options[index].disabled = false;
   }
 };
 
-const addValidateNoticeForm = () => {
-  noticePriceChanger(1000);
+const syncPriceByType = () => {
+  changeNoticePrice(1000);
   noticeType.addEventListener('change', () => {
     const currentType = noticeType.options[noticeType.selectedIndex].text;
     switch (currentType) {
       case 'Бунгало':
-        noticePriceChanger(0);
+        changeNoticePrice(Types.BUNGALOW);
         break;
       case 'Квартира':
-        noticePriceChanger(1000);
+        changeNoticePrice(Types.FLAT);
         break;
       case 'Отель':
-        noticePriceChanger(3000);
+        changeNoticePrice(Types.HOTEL);
         break;
       case 'Дом':
-        noticePriceChanger(5000);
+        changeNoticePrice(Types.HOUSE);
         break;
       case 'Дворец':
-        noticePriceChanger(10000);
+        changeNoticePrice(Types.PALACE);
         break;
     }
   });
 
   noticeRoom.addEventListener('change', () => {
-    const numberRooms = noticeRoom.options[noticeRoom.selectedIndex].text;
-    noticeDisableAll(noticeCapacity);
+    const roomsAmount = noticeRoom.options[noticeRoom.selectedIndex].text;
+    disableAllOptions(noticeCapacity);
     const noticeCapacityList = noticeCapacity.options;
-    switch (numberRooms) {
+    switch (roomsAmount) {
       case '1 комната':
         noticeCapacityList[2].selected = true;
-        noticeResetDisable(noticeCapacity, 2, 3);
+        enableOptions(noticeCapacity, 2, 3);
         break;
       case '2 комнаты':
         noticeCapacityList[1].selected = true;
-        noticeResetDisable(noticeCapacity, 1, 3);
+        enableOptions(noticeCapacity, 1, 3);
         break;
       case '3 комнаты':
         noticeCapacityList[0].selected = true;
-        noticeResetDisable(noticeCapacity, 0, 3);
+        enableOptions(noticeCapacity, 0, 3);
         break;
       case '100 комнат':
         noticeCapacityList[3].selected = true;
-        noticeResetDisable(noticeCapacity, 3, 4);
+        enableOptions(noticeCapacity, 3, 4);
         break;
     }
   });
@@ -101,4 +108,4 @@ const addValidateNoticeForm = () => {
   });
 };
 
-export { addValidateNoticeForm, noticePriceChanger };
+export { syncPriceByType, changeNoticePrice };
