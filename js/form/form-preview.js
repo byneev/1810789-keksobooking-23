@@ -1,6 +1,7 @@
 const IMG_TYPES = ['image/png', 'image/jpeg', 'image/gif'];
 const formAvatarInput = document.querySelector('.ad-form-header__input');
 const formAvatarPreview = document.querySelector('.ad-form-header__preview img');
+const defaultAvatar = formAvatarPreview.src;
 const formPhotoInput = document.querySelector('.ad-form__input');
 const formPhotoPreview = document.querySelector('.ad-form__photo');
 formPhotoPreview.innerHTML = '<img src="" class="ad-form__img" alt="photo preview"/>';
@@ -23,5 +24,12 @@ const addImgPreview = (input, preview) => {
   });
 };
 
+const resetPreview = () => {
+  formAvatarPreview.src = defaultAvatar;
+  formPhoto.style.display = 'none';
+};
+
 addImgPreview(formAvatarInput, formAvatarPreview);
 addImgPreview(formPhotoInput, formPhoto);
+
+export { resetPreview };

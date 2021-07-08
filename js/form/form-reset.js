@@ -1,5 +1,6 @@
 import { mapFilter } from '../map/map-data.js';
 import { refreshMap } from '../map/map.js';
+import { resetPreview } from './form-preview.js';
 import { changeNoticePrice } from './form-validation.js';
 
 const DEFAULT_PRICE = 1000;
@@ -9,6 +10,7 @@ const btnReset = noticeForm.querySelector('.ad-form__reset');
 const resetPageData = () => {
   noticeForm.reset();
   mapFilter.reset();
+  resetPreview();
   refreshMap();
   changeNoticePrice(DEFAULT_PRICE);
 };
