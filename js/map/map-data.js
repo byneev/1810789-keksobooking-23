@@ -1,5 +1,7 @@
+import { debounce } from '../utils/debounce.js';
+import { dataFilter } from './map-filter.js';
 import { showLoadAdsError, hideLoadAdsError } from './map-popups.js';
-import { fillAdsLayer } from './map.js';
+import { fillAdsLayer, refreshAds } from './map.js';
 
 const mapFilter = document.querySelector('.map__filters');
 
@@ -11,18 +13,20 @@ const getData = (callOnSuccess, callOnError) => () =>
       }
       throw new Error();
     })
-    .then((data) => {
-      hideLoadAdsError();
-      return data.slice(0, 10);
-    })
+    .then((data) => dataFilter(data))
+    .then((data) => data.slice(0, 10))
     .then((data) => {
       callOnSuccess(data);
     })
+    .then(hideLoadAdsError)
     .catch(callOnError);
 
 const renderAds = getData(fillAdsLayer, showLoadAdsError);
-// const addFilterRender = () => {
-mapFilter.addEventListener('change', renderAds);
-// };
+const addDebounceRender = debounce(refreshAds, 500);
+const addFilterRender = () => {
+  mapFilter.addEventListener('change', () => {
+    addDebounceRender();
+  });
+};
 
-export { renderAds, mapFilter };
+export { renderAds, mapFilter, addFilterRender };
