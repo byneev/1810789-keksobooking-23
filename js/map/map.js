@@ -1,6 +1,8 @@
 import { generateCard } from './map-card-generation.js';
-import { renderAds } from './map-data.js';
+import { dataFromServer } from './map-data.js';
+import { filterOutData } from './map-filter.js';
 
+const noticeAdress = document.querySelector('#address');
 const mapContainer = document.querySelector('#map-canvas');
 const map = L.map(mapContainer);
 const mainMarkerIcon = L.icon({
@@ -12,21 +14,6 @@ const mainMarker = L.marker([35.6894, 139.692], {
   draggable: true,
   icon: mainMarkerIcon,
 });
-
-const drawMap = () => {
-  map
-    .on('load', () => {
-      renderAds();
-    })
-    .setView([35.6894, 139.692], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-
-  mainMarker.addTo(map);
-};
-
-const noticeAdress = document.querySelector('#address');
 
 const setDefaultLocation = () => {
   const { lat, lng } = mainMarker.getLatLng();
@@ -41,20 +28,6 @@ const adsIcon = L.icon({
 });
 
 const adsLayer = L.layerGroup().addTo(map);
-
-const refreshMap = () => {
-  map.setView([35.6894, 139.692], 13);
-  mainMarker.setLatLng([35.6894, 139.692]);
-  adsLayer.clearLayers();
-  renderAds();
-  setDefaultLocation();
-};
-
-const refreshAds = () => {
-  adsLayer.clearLayers();
-  renderAds();
-};
-
 const addMarker = (data) => {
   const { location } = data;
   const cardPopup = generateCard(data);
@@ -67,8 +40,32 @@ const addMarker = (data) => {
     });
 };
 
-const fillAdsLayer = (adsData) => {
-  adsData.forEach((data) => addMarker(data));
+const fillAdsLayer = (cards) => {
+  adsLayer.clearLayers();
+  const handledCards = filterOutData(cards);
+  handledCards.slice(0, 10).forEach((card) => {
+    addMarker(card);
+  });
+};
+const drawMap = () => {
+  map
+    .on('load', () => {
+      dataFromServer.then((data) => fillAdsLayer(data));
+    })
+    .setView([35.6894, 139.692], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  mainMarker.addTo(map);
 };
 
-export { fillAdsLayer, refreshMap, drawMap, refreshAds };
+const refreshMap = () => {
+  map.setView([35.6894, 139.692], 13);
+  mainMarker.setLatLng([35.6894, 139.692]);
+  adsLayer.clearLayers();
+  dataFromServer.then((data) => fillAdsLayer(data));
+  setDefaultLocation();
+};
+
+export { fillAdsLayer, refreshMap, drawMap };

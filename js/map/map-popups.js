@@ -4,15 +4,13 @@ errorPopup.classList.add('hidden');
 document.body.appendChild(errorPopup);
 const errorPopupClose = errorPopup.querySelector('.server-message__btn--close');
 
-const showLoadAdsError = () => {
-  errorPopup.classList.remove('hidden');
-  errorPopupClose.addEventListener('click', () => {
-    errorPopup.classList.add('hidden');
-  });
-};
-
 const hideLoadAdsError = () => {
   errorPopup.classList.add('hidden');
 };
 
-export { showLoadAdsError, hideLoadAdsError };
+const onPopupCloseBtn = () => {
+  errorPopup.classList.remove('hidden');
+  errorPopupClose.addEventListener('click', hideLoadAdsError);
+};
+
+export { onPopupCloseBtn, hideLoadAdsError };

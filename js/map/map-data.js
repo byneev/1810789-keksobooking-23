@@ -1,11 +1,10 @@
 import { debounce } from '../utils/debounce.js';
-import { filterOutData } from './map-filter.js';
-import { showLoadAdsError, hideLoadAdsError } from './map-popups.js';
-import { fillAdsLayer, refreshAds } from './map.js';
+import { onPopupCloseBtn } from './map-popups.js';
+import { fillAdsLayer } from './map.js';
 
 const mapFilter = document.querySelector('.map__filters');
 
-const getData = (onSuccess, onError) => () =>
+const getData = () =>
   fetch('https://23.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
@@ -13,18 +12,14 @@ const getData = (onSuccess, onError) => () =>
       }
       throw new Error();
     })
-    .then((data) => filterOutData(data))
-    .then((data) => data.slice(0, 10))
-    .then((data) => onSuccess(data))
-    .then(hideLoadAdsError)
-    .catch(onError);
+    .catch(onPopupCloseBtn);
+const dataFromServer = getData();
 
-const renderAds = getData(fillAdsLayer, showLoadAdsError);
-const addDebounceRender = debounce(refreshAds, 500);
-const adsFilterHandler = () => {
-  mapFilter.addEventListener('change', () => {
-    addDebounceRender();
-  });
+const refreshAds = () => {
+  dataFromServer.then((data) => fillAdsLayer(data));
 };
+const addDebounceRender = debounce(refreshAds, 500);
+const onChangeFilters = () => {};
+mapFilter.addEventListener('change', addDebounceRender);
 
-export { renderAds, mapFilter, adsFilterHandler };
+export { dataFromServer, mapFilter, onChangeFilters };

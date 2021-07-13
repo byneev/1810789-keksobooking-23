@@ -10,7 +10,7 @@ formPhoto.style.display = 'none';
 formPhoto.style.width = '100%';
 formPhoto.style.height = '100%';
 
-const addImgPreview = (input, preview) => {
+const onNoticePhotoLoad = (input, preview) => {
   input.addEventListener('change', () => {
     const inputFile = input.files[0];
     if (IMG_TYPES.includes(inputFile.type)) {
@@ -29,7 +29,7 @@ const resetPreview = () => {
   formPhoto.style.display = 'none';
 };
 
-addImgPreview(formAvatarInput, formAvatarPreview);
-addImgPreview(formPhotoInput, formPhoto);
+onNoticePhotoLoad(formAvatarInput, formAvatarPreview);
+onNoticePhotoLoad(formPhotoInput, formPhoto);
 
 export { resetPreview };

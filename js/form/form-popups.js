@@ -21,7 +21,7 @@ const closeSuccessByClick = () => {
   document.body.removeEventListener('keydown', closeByEsc);
 };
 
-const showSuccessSubmit = () => {
+const onClosePopupSuccess = () => {
   successSubmit.classList.remove('hidden');
   successSubmit.addEventListener('click', closeSuccessByClick);
   document.body.addEventListener('keydown', closeByEsc);
@@ -33,10 +33,10 @@ const closeErrorByClick = () => {
   document.body.removeEventListener('keydown', closeByEsc);
 };
 
-const showErrorSubmit = () => {
+const onClosePopupError = () => {
   errorSubmit.classList.remove('hidden');
   errorSubmit.addEventListener('click', closeErrorByClick);
   document.body.addEventListener('keydown', closeByEsc);
 };
 
-export { showSuccessSubmit, showErrorSubmit };
+export { onClosePopupSuccess, onClosePopupError };

@@ -25,12 +25,14 @@ const disableAllOptions = (select) => {
 };
 
 const enableOptions = (select, start, end) => {
-  for (let index = start; index < end; index++) {
-    select.options[index].disabled = false;
-  }
+  [...select.options].forEach((option) => {
+    if ([...select.options].indexOf(option) >= start && [...select.options].indexOf(option) < end) {
+      option.disabled = false;
+    }
+  });
 };
 
-const syncPriceByType = () => {
+const onChangeTypeInput = () => {
   changeNoticePrice(1000);
   noticeType.addEventListener('change', () => {
     const currentType = noticeType.options[noticeType.selectedIndex].text;
@@ -108,4 +110,4 @@ const syncPriceByType = () => {
   });
 };
 
-export { syncPriceByType, changeNoticePrice };
+export { onChangeTypeInput, changeNoticePrice };

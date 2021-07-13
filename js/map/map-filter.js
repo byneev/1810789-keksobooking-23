@@ -30,6 +30,25 @@ const getItemRank = (dataItem) => {
   return rank;
 };
 
+const getSameFeatures = (dataItem) => {
+  const features = dataItem.offer.features;
+  let flag = true;
+  if (features === undefined) {
+    return flag;
+  }
+  const filterFeaturesItems = filterFeatures.querySelectorAll('[name="features"]');
+  const isFeaturesChecked = [...filterFeaturesItems].some((feature) => feature.checked);
+  if (!isFeaturesChecked) {
+    return flag;
+  }
+  [...filterFeaturesItems].forEach((feature) => {
+    if (feature.checked && !features.includes(feature.value)) {
+      flag = false;
+    }
+  });
+  return flag;
+};
+
 const sortByRank = (itemA, itemB) => getItemRank(itemB) - getItemRank(itemA);
 
 const sortData = (data) => {
@@ -38,11 +57,14 @@ const sortData = (data) => {
 };
 
 const filterOutData = (data) => {
-  const dataHandled = data
-    .filter((dataItem) => filterType.value === dataItem.offer.type || filterType.value === 'any')
-    .filter((dataItem) => filterRooms.value === String(dataItem.offer.rooms) || filterRooms.value === 'any')
-    .filter((dataItem) => filterGuests.value === String(dataItem.offer.guests) || filterGuests.value === 'any')
-    .filter((dataItem) => filterPrice.value === getPriceString(dataItem) || filterPrice.value === 'any');
+  const dataHandled = data.filter(
+    (dataItem) =>
+      (filterType.value === dataItem.offer.type || filterType.value === 'any') &&
+      (filterRooms.value === String(dataItem.offer.rooms) || filterRooms.value === 'any') &&
+      (filterGuests.value === String(dataItem.offer.guests) || filterGuests.value === 'any') &&
+      (filterPrice.value === getPriceString(dataItem) || filterPrice.value === 'any') &&
+      getSameFeatures(dataItem),
+  );
 
   sortData(dataHandled);
 
